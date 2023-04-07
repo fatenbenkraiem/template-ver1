@@ -1,0 +1,206 @@
+<app-adminheader></app-adminheader>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <app-adminsidebar></app-adminsidebar>
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Réservation</h1>
+                <div class="row" *ngIf="addFormVisible">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            
+                        </div>
+                        <div class="card-body">
+
+                            <form (ngSubmit)="createReservation()" method="POST">
+                                <div class="card card-default">
+
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="form-group col-lg-6">
+                                                <label>date début</label>
+                                                <input type="datetime-local" name="date" [(ngModel)]="reservation.datadebut"
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Date fin</label>
+                                                <input type="datetime-local" name="date" [(ngModel)]="reservation.datafin"
+                                                    class="form-control" />
+                                            </div>
+                                            <div>
+                                                <label>Choose ress</label>
+                                                 <select (change)="onOptionSelected($event)">
+                                                  <option value="default">----</option>
+                                                          <option *ngFor="let item of actualitesRes" [value]="item.id">
+                                                             {{item.name}}
+                                                           </option>
+                                                  </select>
+                                            </div>
+                                            <div>
+                                                <label>Choose user</label>
+                                                 <select (change)="onOptionSelect($event)">
+                                                  <option value="default">----</option>
+                                                          <option *ngFor="let item of Demandeurs" [value]="item.id">
+                                                             {{item.nom}}
+                                                           </option>
+                                                  </select>
+                                            </div>
+                                            <div>
+                                                <label>Etat</label>
+                                                 <select name="etat"  [(ngModel)]="reservation.etat">
+                                                  <option value="default">----</option>
+                                                          <option value="1">
+                                                            enable
+                                                           </option>
+                                                           <option value="0">disable</option>
+                                                  </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row float-right">
+                                            <div class="col">
+                                                <button type="reset" class="btn btn-primary  btn-sm m-3"
+                                                    data-dismiss="modal"
+                                                    (click)="hideAddForm()">Annuler</button>
+                                                <button type="submit" class="btn btn-success btn-sm"
+                                                    data-dismiss="modal">Enregistrer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="editFormVisible">
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <form (ngSubmit)="editReservation(reservation)" method="POST">
+                                <div class="card card-default">
+
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                         
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <label>date début</label>
+                                                    <input type="date" name="date" [(ngModel)]="reservation.datadebut"
+                                                        class="form-control" />
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label>Date fin</label>
+                                                    <input type="date" name="date" [(ngModel)]="reservation.datafin"
+                                                        class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label>Choose ress</label>
+                                                 <select (change)="onOptionSelected($event)">
+                                                  <option value="default">----</option>
+                                                          <option *ngFor="let item of actualitesRes" [value]="item.id">
+                                                             {{item.name}}
+                                                           </option>
+                                                  </select>
+                                            </div>
+                                            <div class="row">
+                                                <label>Choose user</label>
+                                                 <select (change)="onOptionSelect($event)">
+                                                  <option value="default">----</option>
+                                                          <option *ngFor="let item of Demandeurs" [value]="item.id">
+                                                             {{item.nom}}
+                                                           </option>
+                                                  </select>
+                                                <label>Etat</label>
+                                                 <select name="etat"  [(ngModel)]="reservation.etat">
+                                                  <option value="default">----</option>
+                                                          <option value="1">
+                                                            enable
+                                                           </option>
+                                                           <option value="0">disable</option>
+                                                  </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                       
+                                    <div class="card-footer">
+                                        <div class="row float-right">
+                                            <div class="col">
+                                                <button type="reset" class="btn btn-primary  btn-sm m-3"
+                                                    data-dismiss="modal"
+                                                    (click)="hideAddForm()">Annuler</button>
+                                                <button type="submit" class="btn btn-success btn-sm"
+                                                    data-dismiss="modal" (click)="updateReservation()">Enregistrer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col col-lg-10">
+                                    <i class="fas fa-table me-1"></i>
+                                    Liste des Réservations
+                                </div>
+                                <div class="col col-lg-2">
+                                    <button class="btn btn-primary btn-sm float-right" (click)="showAddForm()">
+                                        Ajouter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="dataTable-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let reservation of reservations">
+                                        <td>{{ reservation.datadebut }}</td>
+                                        <td>{{ reservation.datafin }}</td>
+                                        
+                                       
+                                        <td>
+                                            <div class="row">
+                                                <div class="col float-right">
+                                                    <button class="btn btn-sm btn-warning m-2"
+                                                        (click)="editReservation(reservation)">
+                                                    Modifier                                                    </button>
+                                                    <button class="btn btn-sm btn-danger m-2"
+                                                        (click)="deleteReservation(reservation.id)">
+                                                        Delet
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="totalReservations == 0">
+                                        <td colspan="4" style="text-align: center;">Aucune reservation publié!</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
